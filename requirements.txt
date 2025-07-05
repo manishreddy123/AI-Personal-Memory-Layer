@@ -1,0 +1,13 @@
+langchain
+langchain-community
+langchain-huggingface
+faiss-cpu
+notion-client
+google-api-python-client
+google-auth
+google-auth-oauthlib
+python-dotenv
+PyMuPDF
+tiktoken
+sentence-transformers
+ollama
