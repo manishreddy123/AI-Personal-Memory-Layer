@@ -1,0 +1,17 @@
+version: '3.9'
+services:
+  memory-ai:
+    build: .
+    container_name: personal_memory_ai
+    volumes:
+      - ./personal_docs:/app/personal_docs
+      - ./token.json:/app/token.json
+      - ./token_calendar.json:/app/token_calendar.json
+      - .env:/app/.env
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - NOTION_API_KEY=${NOTION_API_KEY}
+      - NOTION_DB_ID=${NOTION_DB_ID}
+      - GOOGLE_CLIENT_SECRET_FILE=credentials.json
+    stdin_open: true
+    tty: true
