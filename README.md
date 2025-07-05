@@ -31,9 +31,9 @@ This project is a **local AI-powered memory assistant** that integrates your **G
 
 ```
 personal_memory_ai/
-├── main.py                    # Entry point
-├── config.py                  # Loads environment variables
-├── .env                       # Secrets file
+├── main.py
+├── config.py
+├── .env
 ├── loaders/
 │   ├── gmail_loader.py
 │   ├── calendar_loader.py
@@ -58,53 +58,93 @@ personal_memory_ai/
 
 - Python 3.9+
 - `pip install -r requirements.txt`
-- [Install Ollama](https://ollama.com/) and run a model like `llama3`
+- [Install Ollama](https://ollama.com/)
 
-```bash
-ollama serve
-ollama run llama3
-```
+---
 
-### 2. 🛠 Set Up APIs
+## 🔧 Setting Up Google Cloud APIs (Gmail & Calendar)
 
-#### 🔐 Create `.env` file with:
+1. Go to [Google Cloud Console](https://console.cloud.google.com/)
+2. Create a new project (e.g., `Personal Memory`)
+3. Navigate to **APIs & Services > Library**
+   - Enable **Gmail API** and **Google Calendar API**
+4. Go to **APIs & Services > OAuth consent screen**
+   - User type: `External`
+   - Fill required fields
+   - Add your Google account as a **test user**
+5. Go to **Credentials > Create Credentials > OAuth Client ID**
+   - Application type: `Desktop App`
+   - Download the `credentials.json`
+6. Place `credentials.json` in your project root
+
+---
+
+## 🗃️ Setting Up Notion API
+
+1. Visit [https://www.notion.so/my-integrations](https://www.notion.so/my-integrations)
+2. Click **+ New integration**
+   - Name: `Personal Memory AI`
+   - Capabilities: Check `Read content`
+   - Submit and **copy your Internal Integration Token**
+3. In Notion, open the database (table view)
+   - Click **Share**
+   - Invite your integration
+4. Copy the database ID from the URL
+   ```
+   https://www.notion.so/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+   ```
+   Use the first 32-character string as `NOTION_DB_ID`
+
+---
+
+## 🦙 Setting Up Ollama & LLM (LLaMA)
+
+1. Download Ollama from [https://ollama.com/download](https://ollama.com/download)
+2. Install and restart terminal
+3. Start Ollama server:
+   ```bash
+   ollama serve
+   ```
+4. Download and start a model (e.g., LLaMA 3):
+   ```bash
+   ollama run llama3
+   ```
+
+---
+
+## 🛠 Create `.env` File
 
 ```env
-OPENAI_API_KEY=sk-...         # Optional if using OpenAI fallback
-NOTION_API_KEY=secret_xxxx    # From https://www.notion.so/my-integrations
+NOTION_API_KEY=secret_xxxxxxxxxxxxxxxxxxxxxxx
 NOTION_DB_ID=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 GOOGLE_CLIENT_SECRET_FILE=credentials.json
 ```
 
-#### 🔑 Google Setup:
+---
 
-- Go to [Google Cloud Console](https://console.cloud.google.com)
-- Enable Gmail API and Calendar API
-- Create OAuth credentials (`Desktop App`)
-- Download `credentials.json` and place it in project root
-- Add your Google account as test user under OAuth Consent Screen
-
-### 3. 🧪 Run for the First Time
+## 🧪 Run the App
 
 ```bash
 python main.py
 ```
 
-- A browser will open for Gmail & Calendar auth
-- Authorize the app
-- The assistant will index your emails, notes, and events
+- Authorize access to Gmail and Calendar in browser
+- Data will be loaded into local vectorstore
+- Chat with your memory
 
-### 4. 💬 Start Chatting
+---
+
+## 💬 Example Queries
 
 ```
-You: What was my last Gmail about?
-You: What's on my calendar this week?
-You: Summarize my Notion meeting notes.
+What was my last email about?
+What’s on my calendar this week?
+Summarize my recent Notion project notes.
 ```
 
 ---
 
-## 🔄 Docker Option
+## 🐳 Docker Option
 
 ```bash
 docker-compose build
@@ -113,9 +153,9 @@ docker-compose up
 
 ---
 
-## 🧠 Local LLM via Ollama
+## 🧠 LLM Integration (Ollama)
 
-You can replace OpenAI with a local model using LangChain Ollama integration:
+Use Ollama in LangChain like this:
 
 ```python
 from langchain_community.llms import Ollama
@@ -126,13 +166,9 @@ llm = Ollama(model="llama3")
 
 ## 📌 Notes
 
-- Make sure `.env` and `credentials.json` are correctly set
-- Ollama must be running in background
-- You can load `.pdf` or `.txt` files later via `personal_docs/`
+- You can expand support to local PDFs, TXT, Markdown files
+- Ollama must be running in the background
+- Add error handling or UI using Streamlit optionally
 
 ---
-
-## 🧑‍💻 Maintainer
-
-Built for high-impact personal productivity. Customize it to use other APIs or memory stores.
 
